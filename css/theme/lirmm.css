@@ -299,6 +299,14 @@ body {
 .reveal #covertitle:hover {
   color: white; }
 
+.reveal .slides section .fragment.step-fade-in-then-out {
+  opacity: 0;
+  display: none; }
+
+.reveal .slides section .fragment.step-fade-in-then-out.current-fragment {
+  opacity: 1;
+  display: inline; }
+
 .reveal .solutions li {
   padding: 0em;
   margin-left: -0.5em;
