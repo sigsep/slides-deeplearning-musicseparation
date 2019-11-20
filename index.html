@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Deep Learning for Music Unmixing</title>
 
 		<link rel="stylesheet" href="css/reset.css">
 		<link rel="stylesheet" href="css/reveal.css">
@@ -40,16 +40,11 @@
 					<p>
 						<img src="css/theme/img/inria-cover.svg" id="inria" class="logo" alt="">
 				</section>
-				
-		<section>
-			<h1>Music Unmixing/Separation</h1>
-			<div style="text-align: center;">
-			<img class="fragment step-fade-in-then-out" width="70%" src="assets/stones_all.jpg" alt="">
-			<img class="fragment step-fade-in-then-out" width="70%" src="assets/stones_noguitar.jpg" alt="">
-			<img class="fragment step-fade-in-then-out" width="70%" src="assets/stones_noguitar_novocals.jpg" alt="">			</div>
+			
 
-		</section>
-
+		<section data-background-image="assets/stones_all.jpg"><h1>Music Unmixing/Separation</h1></section>
+		<section data-background-transition="none" data-background-image="assets/stones_noguitar.jpg"><h1>Music Unmixing/Separation</h1></section>
+		<section data-background-transition="none" data-background-image="assets/stones_noguitar_novocals.jpg"><h1>Music Unmixing/Separation</h1></section>
 		<section>
 			<h1>Applications</h1>
 			<img width="60%" style="float:right" src="assets/karaoke.jpg" alt="">
@@ -71,23 +66,19 @@
 
 		<section data-background-transition="none" data-state="no-title-footer"
 			data-background-image="assets/demotrack/mix.jpg">
-			<!-- <h1><button data-audio="assets/demotrack/mixture.m4a">▶</button></h1> -->
 			<h1 style="margin-top:5%; color:white">Mixture spectrogram</h1>
 		</section>
 		<section data-background-transition="none">
 			<section data-background-transition="none" data-state="no-title-footer"
 				data-background-image="assets/demotrack/vocals.jpg">
-				<!-- <h1><button data-audio="assets/demotrack/vocals.m4a">▶</button></h1> -->
 				<h1 style="margin-top:5%; color:white">Vocals spectrogram</h1>
 			</section>
 			<section data-background-transition="none" data-state="no-title-footer"
 				data-background-image="assets/demotrack/drums.jpg">
-				<!-- <h1><button data-audio="assets/demotrack/drums.m4a">▶</button></h1> -->
 				<h1 style="margin-top:5%; color:white">Drums spectrogram</h1>
 			</section>
 			<section data-background-transition="none" data-state="no-title-footer"
 				data-background-image="assets/demotrack/bass.jpg">
-				<!-- <h1><button data-audio="assets/demotrack/bass.m4a">▶</button></h1> -->
 				<h1 style="margin-top:5%; color:white">Bass spectrogram</h1>
 			</section>
 		</section>
@@ -127,7 +118,7 @@
 
 		</section>
 
-		<section class="fig-container" data-file="https://www.youtube.com/embed/IxLnoy-GzqI">
+		<section class="fig-container" data-background-color="#000000" data-file="https://www.youtube.com/embed/IxLnoy-GzqI">
 		</section>
 	
 		<section>
@@ -448,16 +439,16 @@
 				</section>
 
 
-				<section class="fig-container" data-file="https://www.youtube.com/embed/7ezi7EFtZrU">
+				<section class="fig-container" data-background-color="#000000" data-file="https://www.youtube.com/embed/7ezi7EFtZrU">
 				</section>
 
-				<section class="fig-container" data-file="https://www.youtube.com/embed/MMLsDLF1DfI">
+				<section class="fig-container" data-background-color="#000000" data-file="https://www.youtube.com/embed/MMLsDLF1DfI">
 				</section>
 
 			</div>
 			<div class='footer'>
 				<img src="css/theme/img/inria-bottom.svg" alt="Logo" />
-				<div id="middlebox">Interested? Contact fabian-robert.stoter@inria.fr</div>
+				<div id="middlebox">Deep Learning for Music Unmixing</div>
 			</div>
 		</div>
 
@@ -468,7 +459,7 @@
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
-				controls: false,
+				controls: true,
 				progress: true,
 				history: true,
 				center: false,
@@ -482,7 +473,7 @@
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
 					{ src: 'plugin/math-katex/math-katex.js', async: true },
-					{ src: 'node_modules/reveald3/reveald3.js' },
+					{ src: 'plugin/reveald3/reveald3.js' },
 					{ src: 'plugin/highlight/highlight.js', async: true }
 				]
 			});
