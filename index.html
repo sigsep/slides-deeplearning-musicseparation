@@ -26,21 +26,52 @@
 		<div class="reveal">
 			<div class="slides">
 
-				<section class="cover" data-background="css/theme/img/background-red.jpg" data-background-repeat="no-repeat" data-background-position="bottom center" data-state="no-title-footer no-progressbar has-dark-background">
+				<section class="cover" data-background="https://static.wixstatic.com/media/dc75cb_c43d95dcd4c84159a814f52e85bb98e0~mv2.png/v1/fill/w_2215,h_1263,al_c,q_95/dc75cb_c43d95dcd4c84159a814f52e85bb98e0~mv2.webp" data-background-repeat="no-repeat" data-background-position="bottom center" data-state="no-title-footer no-progressbar has-dark-background">
 					<div class="covertitle">
 					<h2 id="covertitle">Deep Learning for Music Separation</h2>
-					Inria and LIRMM, Montpellier<br /><br>
+
 					<p id="coverauthors">
-						Fabian-Robert Stöter & Antoine Liutkus<br />
+						Fabian-Robert Stöter<br />
 						<p>
-							✉️ fabian-robert.stoter@inria.fr<br />
+							✉️ fabian@audioshake.ai<br />
 						</p>
 				
 					</p>
 					<p>
-						<img src="css/theme/img/inria-cover.svg" id="inria" class="logo" alt="">
 				</section>
 			
+				<section>
+					<h1>Agenda</h1>
+				
+					<ul>
+						<li>Introduction into Music Separation</li> 
+
+						<li>Building blocks</li>
+						<li style="opacity: 0.4;">Discussion</li>
+						<li>Architectures and Training</li>
+						<li>U-Net</li>
+						<li style="opacity: 0.4;">Discussion</li>
+						<li>Trends</li>
+						<li>Challenge</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>About myself</h1>
+							<ul>
+								<li>PhD at AudioLabs with Bernd Edler</li>
+								<li>Post-Doc at Inria in Montpellier, France</li>
+								<li>Head-of-research for Audioshake</li>
+							</ul>
+
+							<p>
+								<img width="100px" style="margin-right: 2em" src="assets/frs.jpg" alt=""> 
+								<img width="200px" style="margin-right: 2em"  src="assets/AudioLabs.png" alt=""> 
+								<img width="200px" style="margin-right: 2em; padding-top: 2em;" src="assets/inria.png" alt=""> 
+								<img width="200px" style="background-color: rgb(54, 229, 183)" src="assets/AUDIOSHAKE_logo_white.webp" alt="">
+
+							</p>
+				</section>
 
 				<section data-background-image="assets/stones_all.jpg"><h1>Music Unmixing/Separation</h1></section>
 				<section data-background-transition="none" data-background-image="assets/stones_noguitar.jpg"><h1>Music Unmixing/Separation</h1></section>
@@ -48,57 +79,259 @@
 
 				<section>
 					<h1>Applications</h1>
-					<img width="60%" style="float:right" src="assets/karaoke.jpg" alt="">
+					<img width="40%" style="float:right" src="assets/karaoke.jpg" alt="">
 
 					<ul>
-						<li>Automatic Karaoke</li>
-						<li>Creative Music Production</li>
-						<li>Active listening</li>
-						<li>Upmixing (stereo $\Rightarrow$ 5.1)</li>
-						<li>Music Education</li>
-						<li>Pre-processing for MIR</li>
+						<li class="fragment">Automatic Karaoke</li>
+						<li class="fragment">Creative Music Production</li>
+						<li class="fragment">Active listening</li>
+						<li class="fragment">Upmixing (stereo $\Rightarrow$ 5.1)</li>
+						<li class="fragment">Music Education</li>
+						<li class="fragment">Pre-processing for MIR
+							<ul class="fragment">
+								<li>automatic music transcription</li>
+								<li>lyric and music alignment</li>
+								<li>musical instrument detection</li>
+								<li>lyric recognition</li>
+								<li>vocal activity detection</li>
+								<li>fundamental frequency estimation</li>
+							</ul>
+						</li>
 					</ul>
+				</section>
+
+				<section>
+					<h1>Task defintion</h1>
+					
+					
+					<p><img width="700px" src="https://faroit.com/defense-slides/assets/images/mixture_model.svg" alt=""></p>
+
+					<ul class="fragment">
+						<li>$s$ be a instrument recording</li>
+						<li>$x$ is the observed mixture signal</li>
+					</ul>
+					
+					<h3 class="fragment">Inverse Problem</h3>
+					<ul class="fragment" >
+						<li>Estimate the original signals $s$ from the measurement $y$</li>
+						<li>$k$ is known</li>
+						<li>we only have a single observation: 	<b>under-determined</b></li>
+					</ul> 
+
+
+				</section>
+				<section>
+					<h1>Classical approach: an inverse problem</h1>
+					<img class="fragment" width="100%" style="float:center" src="assets/sources_mixing_separation.svg" alt="">
+				</section>
+				
+				<section>
+					<section>
+						<h1>Music separation as a machine learning problem</h1>
+						<h2> Generative or discriminative </h2>
+						<img width="100%" src="assets/generative-discriminative.svg" alt="">
+					</section>
+				
+					<section>
+						<h1>Music separation as a machine learning problem</h1>
+						<h2>Classification ...</h2>
+						<img width="66%" src="assets/binarymasking.svg" alt="">
+						<h4>Binary Masking</h4>
+						<h2> ... or regression ?</h2>
+						<img width="50%" src="assets/softmask.svg" alt="">
+						<h4>Softmask</h4>
+						<img width="50%" src="assets/direct.svg" alt="">
+						<h4>Magnitude Spectrogram</h4>
+					</section>
+				
+					<section>
+						<h1>Music separation as a machine learning problem</h1>
+						<h2>Supervised ... </h2>
+						<img style="float:right"
+							src="https://docs.google.com/drawings/d/e/2PACX-1vRXc_l4uNUTSOoAif8r4O-AKfAVBBMUSPVG_VMu79LjcZLb4xKLgFTVoSqVodvGetEvdeakfb4Nul-3/pub?w=400"
+							alt="">
+						<ul>
+							<li>Single I/O: modeling sources independently</li>
+							<li>Multiple I/O: modeling sources jointly</li>
+							<li>Siamese networks, Chimera Networks</li>
+						</ul>
+				
+						<h2>... or unsupervised ? <font color="red">(open direction)</font>
+						</h2>
+				
+					</section>
+				
+					<section>
+						<h1>Music separation as a machine learning problem</h1>
+						<h2>Modeling fixed-sized spectrograms ... ?</h2>
+						<ul>
+							<li>Separating chunks: straightforward reuse of image models</li>
+							<li>Batching over chunks</li>
+							<li>Fully connected, etc</li>
+						</ul>
+						<h2>... or learning dynamic models ?</h2>
+						<ul>
+							<li>Very long-term dependencies !</li>
+							<li>LSTM, CNN, etc</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<h1>Why is it a challenging problem with deep learning</h1>
+				
+					<ul>
+						<li>Music has a lot variations</li>
+						<li>Music has long dependencies and have different length</li>
+						<li>Evaluation metrics (perceptual) not differentiable</li>
+						<li>Very little available data</li>
+					</ul>
+
+					<img width="100%" src="assets/richter.gif" alt="">
+				</section>
+
+				<section data-background-transition="none" data-state="no-title-footer"
+					data-background-image="assets/demotrack/mix.jpg">
+					<h1 style="margin-top:5%; color:white">Mixture spectrogram</h1>
+					<audio controls src="assets/demotrack/mixture.m4a"></audio>
+				</section>
+				<section data-background-transition="none">
+					<section data-background-transition="none" data-state="no-title-footer"
+						data-background-image="assets/demotrack/vocals.jpg">
+						<h1 style="margin-top:5%; color:white">Vocals spectrogram</h1>
+						<audio controls src="assets/demotrack/vocals.m4a"></audio>
+					</section>
+					<section data-background-transition="none" data-state="no-title-footer"
+						data-background-image="assets/demotrack/drums.jpg">
+						<h1 style="margin-top:5%; color:white">Drums spectrogram</h1>
+						<audio controls src="assets/demotrack/drums.m4a"></audio>
+					</section>
+					<section data-background-transition="none" data-state="no-title-footer"
+						data-background-image="assets/demotrack/bass.jpg">
+						<h1 style="margin-top:5%; color:white">Bass spectrogram</h1>
+						<audio controls src="assets/demotrack/bass.m4a"></audio>
+					</section>
+				</section>
+
+				<section>
+					<h1>Basic Separation Architectures</h1>
+					<img src="assets/encoder_decoder.png" alt="">
+
+					<ul>
+						<li>Encoder here: representation</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>Basic recipe</h1>
+				
+					<p>we need...</p>
+					
+					<ul>
+						<li>Effective representation (STFT?)</li>
+						<li>Model predicts a mask: ➡ $mask \cdot mixture = estimate$</li>
+						<li>Model should output audio at the same shape as the input</li>
+						<li>Generalize to different instruments</li>
+						<li>Utilize stereo information</li>
+						<li>Audio signal reconstruction: inverse STFT
+							<ul>
+								<li>Magnitude: the masked mixed audio</li>
+								<li>Phase: the phase of the mixed audio</li>
+							</ul>
+						</li>
+					</ul>
+
+				</section>
+	
+				<section>
+					<h1>Separating auto-encoder</h1>
+					
+					<ul>
+						<li>Encoder: transform the input into a latent vector</li>
+						<li>Decoder: reconstruct the input from the latent vector</li>
+						<li>complex structures can be learned with deeper layers</li>
+						<li>Weight matrices are typically symmetric between the encoder
+						and decoder</li>
+						<li>Trained to minimize the reconstruction error between input and output</li>
+					</ul>
+					<img src="assets/autoencoder.png" alt="">
 				</section>
 
 				<section>
 					<h1>Time frequency representations</h1>
 					<img width="100%" style="margin-top:5%; float:left" src="assets/STFT.svg" alt="">
 				</section>
+				
 
-				<section data-background-transition="none" data-state="no-title-footer"
-					data-background-image="assets/demotrack/mix.jpg">
-					<h1 style="margin-top:5%; color:white">Mixture spectrogram</h1>
+				<section>
+					<h1>A Baseline System</h1>
+					<h2>Pre-Processing</h2>
+					<ul>
+						<li><b>Time-Frequency Transform (Encoder/Decoder)</b></li>
+						<li><b>Normalization:</b> Gain Variation</li>
+						<li><b>Standardization:</b> Scale Frequency Bands</li>
+					</ul>
 				</section>
-				<section data-background-transition="none">
-					<section data-background-transition="none" data-state="no-title-footer"
-						data-background-image="assets/demotrack/vocals.jpg">
-						<h1 style="margin-top:5%; color:white">Vocals spectrogram</h1>
-					</section>
-					<section data-background-transition="none" data-state="no-title-footer"
-						data-background-image="assets/demotrack/drums.jpg">
-						<h1 style="margin-top:5%; color:white">Drums spectrogram</h1>
-					</section>
-					<section data-background-transition="none" data-state="no-title-footer"
-						data-background-image="assets/demotrack/bass.jpg">
-						<h1 style="margin-top:5%; color:white">Bass spectrogram</h1>
-					</section>
+				
+				<section>
+					<h1>A Baseline System</h1>
+					<h2>Sampling for Training</h2>
+					<img width="400px" style="float:right" src="assets/sampling.gif" alt="">
+					<ul>
+						<li>Slicing Temporal Context
+							<ul>
+								<li>Full tracks too large (vanishing gradient)</li>
+								<li>Context usually 1-10 seconds</li>
+							</ul>
+						</li>
+						<li>Batch from different Tracks</li>
+						<li>Data Augmentation
+							<ul>
+								<li>Image Augmenations doesn't work</li>
+								<li>Apply Random Gains</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h1>Loss functions</h1>
+
+					<ul>
+						<li>Spectrogram losses</li>
+						<li>Waveform losses</li>
+						<li>Combination losses</li>
+						<li>For now: L1 or L2</li>
+					</ul>
+
+					<img src="assets/l1norm.png" alt="">
+
+				</section>
+				
+				<section>
+					<h1>A Baseline System</h1>
+					<img height="400px" style="float:right" src="assets/flow.svg" alt="">
+				
+					<h2>Spectrogram Architectures </h2>
+					<ul>
+						<li><b>Bidirectional LSTM <b style="color:red">[Huang 2014, Uhlich 2015, Takashi 2018]</b></b></li>
+						<li>Sequence2Sequence:</li>
+						<li><b>Input (mix):</b> (sample, frames, frequency)</li>
+						<li><b>Output (target):</b> (sample, frames, frequency)</li>
+					</ul>
 				</section>
 
 				<section>
-					<h1>DNN-based Separation</h1>
+					<h1>A Baseline System</h1>
 					<img style="margin-top:2%; float:left" width="160%" src="assets/open-unmix-master_branch1.svg" alt="">
 				</section>
 				<section>
-					<h1>DNN-based Separation</h1>
+					<h1>A Baseline System</h1>
 					<img style="margin-top:2%; float:left" width="160%" src="assets/open-unmix-master_branch2.svg" alt="">
 				</section>
 				<section>
-					<h1>DNN-based Separation</h1>
+					<h1>A Baseline System</h1>
 					<img style="margin-top:2%; float:left" width="160%" src="assets/open-unmix-master_branch3.svg" alt="">
-				</section>
-				<section>
-					<h1>DNN-based Separation</h1>
-					<img style="margin-top:2%; float:left" width="160%" src="assets/open-unmix-master_branch4.svg" alt="">
 				</section>
 
 				<section>
@@ -119,9 +352,7 @@
 
 				</section>
 
-				<section class="fig-container" data-background-color="#000000" data-file="https://www.youtube.com/embed/IxLnoy-GzqI">
-				</section>
-			
+							
 				<section>
 					<h1>Training Dataset: MUSDB18</h1>
 					<ul>
@@ -133,323 +364,297 @@
 								</ul> <img width="320px" style="float: right" src="assets/ni_logo.png" alt="">
 								<img width="60%" src="assets/hero.svg" alt="">
 				</section>
+				<section>
+					<h1>Evaluation</h1>
+					
+					<img src="assets/chart.svg" alt="">
+				</section>
+
+				<section class="fig-container" data-background-color="#000000" data-file="https://www.youtube.com/embed/IxLnoy-GzqI">
+				</section>
+				<section class="fig-container" data-background-color="#000000" data-file="https://www.youtube.com/embed/7ezi7EFtZrU">
+					<!-- demo video 1 -->
+				</section>
+				
+				<section class="fig-container" data-background-color="#000000" data-file="https://www.youtube.com/embed/MMLsDLF1DfI">
+					<!-- demo video 2 -->
+				</section>
+
 
 				<section>
-					<h1>Music separation datasets</h1>
-					<table>
-						<thead>
-							<tr>
-								<th><strong>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></th>
-								<th><strong>Year</strong></th>
-								<th><strong>Reference&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></th>
-								<th><strong>#Tracks</strong></th>
-								<th><strong>Tracks&nbsp;dur&nbsp;(s) </strong></th>
-								<th><strong>Full/stereo?</strong></th>
-								<th><strong>Total&nbsp;length</strong></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<a href="http://www.mtg.upf.edu/download/datasets/mass" target="_blank" rel="noopener noreferrer">
-										MASS
-										<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100"
-											width="15" height="15" class="icon outbound">
-											<path fill="currentColor"
-												d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z">
-											</path>
-											<polygon fill="currentColor"
-												points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9">
-											</polygon>
-										</svg>
-									</a>
-								</td>
-								<td>2008</td>
-								<td>(Vinyes)</td>
-								<td>9</td>
-								<td>
-									(16
-									<span class="katex">
-										<span class="katex-mathml">
-											<math>
-												<semantics>
-													<mrow>
-														<mo>±</mo>
-													</mrow>
-													<annotation encoding="application/x-tex">\pm</annotation>
-												</semantics>
-											</math>
-										</span>
-										<span aria-hidden="true" class="katex-html"><span class="strut"
-												style="height: 0.58333em;"></span><span class="strut bottom"
-												style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="base"><span
-													class="mord">±</span></span></span>
-									</span>
-									7)
-								</td>
-								<td>❌ / ✔️</td>
-								<td>2m24s</td>
-							</tr>
-							<tr>
-								<td>
-									<a href="https://sites.google.com/site/unvoicedsoundseparation/mir-1k" target="_blank"
-										rel="noopener noreferrer">
-										MIR-1K
-										<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100"
-											width="15" height="15" class="icon outbound">
-											<path fill="currentColor"
-												d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z">
-											</path>
-											<polygon fill="currentColor"
-												points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9">
-											</polygon>
-										</svg>
-									</a>
-								</td>
-								<td>2010</td>
-								<td>(Hsu)</td>
-								<td>1,000</td>
-								<td>8 <span class="katex"><span class="katex-mathml"></td>
-								<td>❌ / ❌</td>
-								<td>2h13m20s</td>
-							</tr>
-							<tr>
-								<td>
-									<a href="http://www.tsi.telecom-paristech.fr/aao/en/2012/03/12/quasi/" target="_blank"
-										rel="noopener noreferrer">
-										QUASI
-										<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100"
-											width="15" height="15" class="icon outbound">
-											<path fill="currentColor"
-												d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z">
-											</path>
-											<polygon fill="currentColor"
-												points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9">
-											</polygon>
-										</svg>
-									</a>
-								</td>
-								<td>2011</td>
-								<td>(Liutkus et al.)</td>
-								<td>5</td>
-								<td>
-									(206
-									<span class="katex">
-										<span class="katex-mathml">
-											<math>
-												<semantics>
-													<mrow>
-														<mo>±</mo>
-													</mrow>
-													<annotation encoding="application/x-tex">\pm</annotation>
-												</semantics>
-											</math>
-										</span>
-										<span aria-hidden="true" class="katex-html"><span class="strut"
-												style="height: 0.58333em;"></span><span class="strut bottom"
-												style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="base"><span
-													class="mord">±</span></span></span>
-									</span>
-									21)
-								</td>
-								<td>✔️ / ✔️</td>
-								<td>17m10s</td>
-							</tr>
-							<tr>
-								<td>
-									<a href="http://www.loria.fr/~aliutkus/kam/" target="_blank" rel="noopener noreferrer">
-										ccMixter
-										<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100"
-											width="15" height="15" class="icon outbound">
-											<path fill="currentColor"
-												d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z">
-											</path>
-											<polygon fill="currentColor"
-												points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9">
-											</polygon>
-										</svg>
-									</a>
-								</td>
-								<td>2014</td>
-								<td>(Liutkus et al)</td>
-								<td>50</td>
-								<td>
-									(231
-									<span class="katex">
-										<span class="katex-mathml">
-											<math>
-												<semantics>
-													<mrow>
-														<mo>±</mo>
-													</mrow>
-													<annotation encoding="application/x-tex">\pm</annotation>
-												</semantics>
-											</math>
-										</span>
-										<span aria-hidden="true" class="katex-html"><span class="strut"
-												style="height: 0.58333em;"></span><span class="strut bottom"
-												style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="base"><span
-													class="mord">±</span></span></span>
-									</span>
-									77)
-								</td>
-								<td>✔️ / ✔️</td>
-								<td>3h12m30s</td>
-							</tr>
-							<tr>
-								<td>
-									<a href="http://medleydb.weebly.com/" target="_blank" rel="noopener noreferrer">
-										MedleyDB
-										<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100"
-											width="15" height="15" class="icon outbound">
-											<path fill="currentColor"
-												d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z">
-											</path>
-											<polygon fill="currentColor"
-												points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9">
-											</polygon>
-										</svg>
-									</a>
-								</td>
-								<td>2014</td>
-								<td>(Bittner et al)</td>
-								<td>63</td>
-								<td>
-									(206
-									<span class="katex">
-										<span class="katex-mathml">
-											<math>
-												<semantics>
-													<mrow>
-														<mo>±</mo>
-													</mrow>
-													<annotation encoding="application/x-tex">\pm</annotation>
-												</semantics>
-											</math>
-										</span>
-										<span aria-hidden="true" class="katex-html"><span class="strut"
-												style="height: 0.58333em;"></span><span class="strut bottom"
-												style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="base"><span
-													class="mord">±</span></span></span>
-									</span>
-									121)
-								</td>
-								<td>✔️ / ✔️</td>
-								<td>3h36m18s</td>
-							</tr>
-							<tr>
-								<td>
-									<a href="http://mac.citi.sinica.edu.tw/ikala/" target="_blank" rel="noopener noreferrer">
-										iKala
-										<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100"
-											width="15" height="15" class="icon outbound">
-											<path fill="currentColor"
-												d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z">
-											</path>
-											<polygon fill="currentColor"
-												points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9">
-											</polygon>
-										</svg>
-									</a>
-								</td>
-								<td>2015</td>
-								<td>(Chan et al)</td>
-								<td>206</td>
-								<td>30</td>
-								<td>❌ / ❌</td>
-								<td>1h43m</td>
-							</tr>
-							<tr>
-								<td><a href="/datasets/dsd100.html" class="">DSD100</a><span class="badge"></span></td>
-								<td>2015</td>
-								<td>(Ono et al)</td>
-								<td>100</td>
-								<td>
-									(251
-									<span class="katex">
-										<span class="katex-mathml">
-											<math>
-												<semantics>
-													<mrow>
-														<mo>±</mo>
-													</mrow>
-													<annotation encoding="application/x-tex">\pm</annotation>
-												</semantics>
-											</math>
-										</span>
-										<span aria-hidden="true" class="katex-html"><span class="strut"
-												style="height: 0.58333em;"></span><span class="strut bottom"
-												style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="base"><span
-													class="mord">±</span></span></span>
-									</span>
-									60)
-								</td>
-								<td>✔️ / ✔️</td>
-								<td>6h58m20s</td>
-							</tr>
-							<tr>
-								<td><a href="/datasets/musdb.html" class="">MUSDB18</a></td>
-								<td>2017</td>
-								<td>(Rafii et al)</td>
-								<td>150</td>
-								<td>
-									(236
-									<span class="katex">
-										<span class="katex-mathml">
-											<math>
-												<semantics>
-													<mrow>
-														<mo>±</mo>
-													</mrow>
-													<annotation encoding="application/x-tex">\pm</annotation>
-												</semantics>
-											</math>
-										</span>
-										<span aria-hidden="true" class="katex-html"><span class="strut"
-												style="height: 0.58333em;"></span><span class="strut bottom"
-												style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="base"><span
-													class="mord">±</span></span></span>
-									</span>
-									95)
-								</td>
-								<td>✔️ / ✔️</td>
-								<td>9h50m</td>
-							</tr>
-							<tr class="fragment" style="background-color:coral;">
-								<td>INTERNAL</td>
-								<td>2019</td>
-								<td></td>
-								<td></td>
-								<td>
-								</td>
-								<td>✔️ / ✔️</td>
-								<td>500h</td>
-							</tr>
-						</tbody>
-					</table>
+					<h1>Discussion</h1>
+				</section>
+				
+
+				<section>
+					<h1>Computer Vision</h1>
+				
+					<div align="center">
+						<img width="700px" src="assets/cat_segment.png" alt="">
+					</div>
+				</section>
+				
+				<section>
+					<h1>Convolutional Neural Networks</h1>
+				
+					<div align="center">
+						<img width="700px" src="assets/classification.png" alt="">
+					</div>
 				</section>
 
 				<section>
-					<h1>Open-unmix: state-of-the-art for music demixing</h1>
-					<img style="margin-top:2%; float:left" width="160%" src="assets/dnn_scheme_torch.svg" alt="">
-					
-					<ul style="margin-top:2em">
-						<li>Foster reproducible research on music separation</li>
-						<li>Demos and Code: <a href="open.unmix.app">open.unmix.app</a></li>
-						<li>Winner PyTorch Hackathon 2019: <a href="https://pytorch.devpost.com">pytorch.devpost.com</a></li>
+					<h1>Convolutional Auto-Encoder</h1>
+				
+					<ul>
+						<li>Unpooling</li>
+						<li>Deconvolution/Transposed Convolution</li>
+						<!-- Making the upsampling procedure parameter free, where Unet makes use of transpose convolution (filters) to learn how to -->
+						<!-- upsample. -->
+						<!-- segnet keeps track of the indices -->
+					</ul>
+				</section>
+				
+				<section>
+					<h1>Encoder/Decoder architectures</h1>
+				
+					<ul>
+						<li>For audio classification, output is softmax or sigmoid layer</li>
+						<li>The loss function is the e.g. cross-entropy between the output and the label vector</li>
+						<li>Appropriate in audio-to-tag (or semantic labels) or audio-to-score (MIDI, beat, chord) task</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h1>Encoder/Decoder for audio-to-audio</h1>
+					<ul>
+						<li>source separation, style transfer, denoising, enhancement</li>
+						<li>Inverse architecture (decoder) converts the feature space back to the audio representation through
+							<b>upsampling</b></li>
+					</ul>
+					<img style="float: right" width="200px" src="assets/encoder-decoder.png" alt="">
+				</section>
+				
+				<section>
+					<h1>Denoising Auto-Encoder (AE)</h1>
+					<!-- lots of parameters, not deep -->
+				</section>
+				
+				<section>
+				
+					<!-- One simple model to use for segmentation would have repeated convolutional layers without any downsampling. 
+										Given appropriate padding, that would result in output the same size as the input (good), but a very limited receptive field -->
+					<h1>How to design the decoder for an convolutional network</h1>
+				
+					<h3>The classification model uses each downsampling layer to double the effective reach of the following
+						convolutions; and without that increase in effective field size, each segmented pixel will only be able to consider a very local
+						neighborhood.</h3>
+						
+						How can we improve the receptive field of an output pixel while maintaining a 1:1 ratio of
+						input pixels to output pixels?
+						<h3>why don't we just use padding?</h3>
+							<!-- because we need to keep the receptive field from the input -->
+				
+				</section>
+				
+				<section>
+					<h1>U-net</h1>
+					<ul>
+						<li>First introduced for medical image segmentation</li>
+						<li>Main contribution: The direct feature maps from the corresponding encoder layer ensure high precision of localization</li>
+					</ul>
+					<img src="assets/u-net-image.png" width="700em" alt="">
+				</section>
+
+				<section>
+					<h1>Skip connection</h1>
+					We first touched on skip connections in chapter 8, although they are employed differently here than in the ResNet
+					architecture. In U-Net, skip connections short-circuit inputs along the downsampling path into the corresponding
+					layers
+					in the upsampling path. These layers receive as input both the upsampled results of the wide receptive field layers
+					from
+					lower in the U as well as the output of the earlier fine detail layers via the “copy and crop” bridge connections.
+					This
+					is the key innovation behind U-Net (which, interestingly, predated ResNet).
+				</section>
+			
+				<section>
+					<h1>Spectrogram U-net</h1>
+
+					<img src="assets/u-net-block.png" width="700em" alt="">
+				</section>
+
+				<section>
+					<h1>Details</h1>
+
+					<ul>
+						<li>The waveform input is resampled to 8kHz and the spectrogram is normalized to the range [0,1]</li>
+						<li>5x5 Filter size of stride 2 in both conv and transposed conv layers</li>
+						<li>No pooling</li>
+						<li>Use L1 norm as a loss function</li>
+					</ul>
+				</section>	
+				<section>
+					<h1>Demo</h1>
+
+									<div style="margin-left: 8em">
+					<ul>
+						<li>Spleeter</li>
+					</ul>
+					<iframe scrolling="no" allow="autoplay"
+						src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/934126789&amp;color=%23ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;show_teaser=true"
+						width="500" height="450" frameborder="no"></iframe>
+									</div>
+
+				</section>
+
+				<section>
+					<h1>Are transposed convolutions safe?</h1>
+					<h3>Demo</h3>
+				</section>
+
+				<section>
+					<h1>Transposed Convolution</h1>
+					<div style="margin-left: 6em; margin-top: 6em;">
+						<iframe width="690px" height="300px" data-src="assets/transposedconv/deconv1d.html" data-preload></iframe>
+					</div>
+					<small style="position: absolute; right: 0px"><a href="https://distill.pub/2016/deconv-checkerboard/">https://distill.pub/2016/deconv-checkerboard/</a></small>
+				</section>
+
+				<section>
+					<h1>2D transposed Convolution</h1>
+
+				<div style="margin-left: 6em; margin-top: 6em;">
+					<iframe width="690px" height="400px" data-src="assets/transposedconv/deconv2d.html" data-preload></iframe>
+				</div>
+				<small style="position: absolute; right: 0px"><a
+						href="https://distill.pub/2016/deconv-checkerboard/">https://distill.pub/2016/deconv-checkerboard/</a></small>
+	
+				</section>
+
+				<section>
+					<h1>Artifacts due to Convolution</h1>
+
+					<ul>
+						<li>Transposed convolution (except stride == kernel size)</li>
+						<li>Weight initialization</li>
+						<li>Training</li>
 					</ul>
 				</section>
 
+				
+				<section>
+					<h1>Music separation vs. Speech Separation</h1>
+					<h2>...in typical applications</h2>
+				
+					<table>
+						<thead>
+							<tr>
+								<th><strong></strong></th>
+								<th><strong>🎤 Speech</strong></th>
+								<th><strong>🎹 Music</strong></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="fragment">
+								<td>sample rate</td>
+								<td class="fragment">4000-16000 kHz</td>
+								<td class="fragment">>=44100 kHz</td>
+							</tr>
+							<tr class="fragment">
+								<td>typical signal length</td>
+								<td class="fragment">seconds</td>
+								<td class="fragment">minutes</td>
+							</tr>
+							<tr class="fragment">
+								<td># sources</td>
+								<td class="fragment">1 to 4</td>
+								<td class="fragment">1 to 20</td>
+							</tr>
+							<tr class="fragment">
+								<td># channels</td>
+								<td class="fragment">1</td>
+								<td class="fragment">2</td>
+							</tr>
+							<tr class="fragment">
+								<td>permutation</td>
+								<td class="fragment">variant</td>
+								<td class="fragment">fixed</td>
+							</tr>
+							<tr class="fragment">
+								<td>Mixing model</td>
+								<td class="fragment">linear/convolutive</td>
+								<td class="fragment">non-linear</td>
+							</tr>
+							<tr class="fragment">
+								<td>Degradations</td>
+								<td class="fragment">noise, reverberation</td>
+								<td class="fragment">distortion, compression</td>
+							</tr>
 
-				<section class="fig-container" data-background-color="#000000" data-file="https://www.youtube.com/embed/7ezi7EFtZrU">
+						</tbody>
+					</table>
+				</section>
+	
+				<section>
+				
+					<h1>Spectrogram vs time domain</h1>
+					<iframe src="https://share.unmix.app/KoyqGF6lrcqBYkYZBYze" width="900px" height="500px" frameborder="0"></iframe>
+				
+				</section>
+			
+				<section>
+					<h1>Conv U-net vs Recurrent</h1>
+
+					<ul>
+						<li>👎 U-net cannot be made low delay</li>
+						<li>U-net cannot be made low delay</li>
+					</ul>
 				</section>
 
-				<section class="fig-container" data-background-color="#000000" data-file="https://www.youtube.com/embed/MMLsDLF1DfI">
+				<section>
+					<h1>Trends</h1>
+
+					<ul>
+						<li>From “Supervised” to “Universal” Separation</li>
+						<li>Dealing with “Imperfect” Training Data</li>
+						<li>“Imperfect” = unknown mixtures of sources</li>
+						<li>Perceptual Loss Functions</li>
+						<li>Multi-Task Training</li>
+						<li>From Research to Deployment</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>Is the problem solved?</h1>
+					
+					<ul>
+						<li>“A system that achieves human auditory analysis performance in all listening situation”
+						(Wang)</li>
+						<li>Thanks to deep learning a lot of progress has been made–But from the contest results we know that we are not
+							there yet</li>
+					</ul>
+				</section>
+				<section>
+					<h1>Music Demixing Challenge</h1>
+					<!-- mention time frequency challenges -->
+					<img src="assets/musdemix.png" alt="">
+					<a href="https://www.aicrowd.com/challenges/music-demixing-challenge-ismir-2021">https://www.aicrowd.com/challenges/music-demixing-challenge-ismir-2021</a>
+
+				</section>
+
+				<section>
+					<h1>Ressources</h1>
+
+					<ul>
+						<li><a href="https://sigsep.github.io">sigsep.github.io</a> Dataset and Baseline implementations</li>
+						<li><a href="https://source-separation.github.io">source-separation.github.io</a> Separation Tutorial:</li>
+						<li><a href=""></a></li>
+						<li><a href=""></a></li>
+					</ul>
 				</section>
 
 			</div>
 			<div class='footer'>
-				<img src="css/theme/img/inria-bottom.svg" alt="Logo" />
 				<div id="middlebox">Deep Learning for Music Unmixing</div>
 			</div>
 		</div>
