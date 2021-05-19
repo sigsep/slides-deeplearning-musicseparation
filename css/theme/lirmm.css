@@ -458,6 +458,11 @@ body {
   top: -2em !important;
   height: 8em; }
 
+.caption {
+  font-size: 0.6em;
+  margin-top: 0.1em;
+}
+
 .reveal section img {
   margin: 0;
   border: 0px;

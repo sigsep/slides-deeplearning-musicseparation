@@ -28,7 +28,7 @@
 
 				<section class="cover" data-background="https://static.wixstatic.com/media/dc75cb_c43d95dcd4c84159a814f52e85bb98e0~mv2.png/v1/fill/w_2215,h_1263,al_c,q_95/dc75cb_c43d95dcd4c84159a814f52e85bb98e0~mv2.webp" data-background-repeat="no-repeat" data-background-position="bottom center" data-state="no-title-footer no-progressbar has-dark-background">
 					<div class="covertitle">
-					<h2 id="covertitle">Deep Learning for Music Separation</h2>
+					<h2 id="covertitle">Music Source Separation</h2>
 
 					<p id="coverauthors">
 						Fabian-Robert Stöter<br />
@@ -47,12 +47,11 @@
 						<li>Introduction into Music Separation</li> 
 
 						<li>Building blocks</li>
-						<li style="opacity: 0.4;">Discussion</li>
 						<li>Architectures and Training</li>
-						<li>U-Net</li>
 						<li style="opacity: 0.4;">Discussion</li>
+						<li>U-Net</li>
 						<li>Trends</li>
-						<li>Challenge</li>
+						<li style="opacity: 0.4;">Discussion</li>
 					</ul>
 				</section>
 
@@ -61,7 +60,7 @@
 							<ul>
 								<li>PhD at AudioLabs with Bernd Edler</li>
 								<li>Post-Doc at Inria in Montpellier, France</li>
-								<li>Head-of-research for Audioshake</li>
+								<li>Head-of-research at Audioshake</li>
 							</ul>
 
 							<p>
@@ -80,7 +79,7 @@
 				<section>
 					<h1>Applications</h1>
 					<img width="40%" style="float:right" src="assets/karaoke.jpg" alt="">
-
+					
 					<ul>
 						<li class="fragment">Automatic Karaoke</li>
 						<li class="fragment">Creative Music Production</li>
@@ -99,27 +98,32 @@
 						</li>
 					</ul>
 				</section>
-
+				
 				<section>
-					<h1>Task defintion</h1>
+					<h1>Task definition</h1>
 					
 					
 					<p><img width="700px" src="https://faroit.com/defense-slides/assets/images/mixture_model.svg" alt=""></p>
-
+					
 					<ul class="fragment">
-						<li>$s$ be a instrument recording</li>
+						<li>$s$ be an instrument recording</li>
 						<li>$x$ is the observed mixture signal</li>
 					</ul>
 					
-					<h3 class="fragment">Inverse Problem</h3>
 					<ul class="fragment" >
-						<li>Estimate the original signals $s$ from the measurement $y$</li>
+						<li>Estimate the original signals $s$ from the measurement $x$</li>
 						<li>$k$ is known</li>
 						<li>we only have a single observation: 	<b>under-determined</b></li>
 					</ul> 
-
-
+					<p></p>
+					<h3 class="fragment">Inverse Problem</h3>
+					
+					
 				</section>
+
+				<section class="fig-container" data-background-color="#000000" data-file="https://www.youtube.com/embed/IxLnoy-GzqI">
+				</section>
+
 				<section>
 					<h1>Classical approach: an inverse problem</h1>
 					<img class="fragment" width="100%" style="float:center" src="assets/sources_mixing_separation.svg" alt="">
@@ -177,19 +181,6 @@
 					</section>
 				</section>
 
-				<section>
-					<h1>Why is it a challenging problem with deep learning</h1>
-				
-					<ul>
-						<li>Music has a lot variations</li>
-						<li>Music has long dependencies and have different length</li>
-						<li>Evaluation metrics (perceptual) not differentiable</li>
-						<li>Very little available data</li>
-					</ul>
-
-					<img width="100%" src="assets/richter.gif" alt="">
-				</section>
-
 				<section data-background-transition="none" data-state="no-title-footer"
 					data-background-image="assets/demotrack/mix.jpg">
 					<h1 style="margin-top:5%; color:white">Mixture spectrogram</h1>
@@ -223,17 +214,32 @@
 				</section>
 
 				<section>
+					<h1>Why is it a challenging problem for deep learning</h1>
+				
+					<ul>
+						<li>Music has a lot variations</li>
+						<li>Music has long dependencies and have different length</li>
+						<li>Evaluation metrics (perceptual) not differentiable</li>
+						<li>Very little available data</li>
+					</ul>
+				
+					<img width="100%" src="assets/richter.gif" alt="">
+					<div class="caption">Image used courtesy of Jan Van Balen.</div>
+				</section>
+
+
+				<section>
 					<h1>Basic recipe</h1>
 				
 					<p>we need...</p>
 					
 					<ul>
-						<li>Effective representation (STFT?)</li>
-						<li>Model predicts a mask: ➡ $mask \cdot mixture = estimate$</li>
-						<li>Model should output audio at the same shape as the input</li>
-						<li>Generalize to different instruments</li>
-						<li>Utilize stereo information</li>
-						<li>Audio signal reconstruction: inverse STFT
+						<li class="fragment">Effective representation (STFT?)</li>
+						<li class="fragment">Model predicts a mask: ➡ $mask \cdot mixture = estimate$</li>
+						<li class="fragment">Model should output audio at the same shape as the input</li>
+						<li class="fragment">Generalize to different instruments</li>
+						<li class="fragment">Utilize stereo information</li>
+						<li class="fragment">Audio signal reconstruction: inverse STFT
 							<ul>
 								<li>Magnitude: the masked mixed audio</li>
 								<li>Phase: the phase of the mixed audio</li>
@@ -242,14 +248,18 @@
 					</ul>
 
 				</section>
-	
+				
+				<section
+					data-background-image="https://www.asimovinstitute.org/wp-content/uploads/2019/04/NeuralNetworkZoo20042019.png">
+				</section>
+
 				<section>
-					<h1>Separating auto-encoder</h1>
+					<h1>Basic model: Separating auto-encoder</h1>
 					
 					<ul>
-						<li>Encoder: transform the input into a latent vector</li>
-						<li>Decoder: reconstruct the input from the latent vector</li>
-						<li>complex structures can be learned with deeper layers</li>
+						<li>Encoder: dense layers the input into a latent vector</li>
+						<li>Decoder: dense layers reconstruct the input from the latent vector</li>
+						<li>Complex structures can be learned with deeper layers</li>
 						<li>Weight matrices are typically symmetric between the encoder
 						and decoder</li>
 						<li>Trained to minimize the reconstruction error between input and output</li>
@@ -258,21 +268,34 @@
 				</section>
 
 				<section>
-					<h1>Time frequency representations</h1>
+					<h1>Basic Encoder: Fixed time frequency representations</h1>
 					<img width="100%" style="margin-top:5%; float:left" src="assets/STFT.svg" alt="">
+					
 				</section>
-				
-
+			
 				<section>
 					<h1>A Baseline System</h1>
 					<h2>Pre-Processing</h2>
 					<ul>
-						<li><b>Time-Frequency Transform (Encoder/Decoder)</b></li>
+						<li><b>Time-Frequency Transform (STFT/ISTFT = Encoder/Decoder)</b></li>
 						<li><b>Normalization:</b> Gain Variation</li>
 						<li><b>Standardization:</b> Scale Frequency Bands</li>
 					</ul>
+
 				</section>
 				
+				<section>
+					<h1>Training Dataset: MUSDB18</h1>
+					<ul>
+						<li>100 train / 50 test full tracks</li>
+						<li>Mastered with pro. digital audio workstations</li>
+						<li>compressed STEMS (<code>MUSDB18</code>) and uncompressed WAV <code>MUSDB18-HQ</code>
+						<li>Parser and Evaluation tools in <i class="fab fa-python"></i></li>
+						<li><a ref=https://sigsep.github.io/datasets/musdb.html>https://sigsep.github.io/datasets/musdb.html </a> </li>
+					</ul> <img width="320px" style="float: right" src="assets/ni_logo.png" alt="">
+					<img width="60%" src="assets/hero.svg" alt="">
+				</section>
+
 				<section>
 					<h1>A Baseline System</h1>
 					<h2>Sampling for Training</h2>
@@ -298,19 +321,30 @@
 					<h1>Loss functions</h1>
 
 					<ul>
-						<li>Spectrogram losses</li>
+						<li>Spectrogram losses
+							<ul>
+								<li>squared loss $\left|X-Y\right|^2$</li>
+								<li>absolute loss $\left|X-Y\right|$</li>
+								<li>Kullback Leibler loss</li>
+								<li>Itakura Saito loss</li>
+								<li>Cauchy, alpha divergence, ...<p>
+								</li>
+							</ul>
+						</li>
+						
 						<li>Waveform losses</li>
 						<li>Combination losses</li>
+
 						<li>For now: L1 or L2</li>
 					</ul>
-
-					<img src="assets/l1norm.png" alt="">
+					<p></p>
+					<a href="https://www.sisec17.audiolabs-erlangen.de/#/listen/34/UHL1">Demo: https://www.sisec17.audiolabs-erlangen.de/#/listen/34/UHL1</a>
 
 				</section>
 				
 				<section>
-					<h1>A Baseline System</h1>
-					<img height="400px" style="float:right" src="assets/flow.svg" alt="">
+					<h1>Recurrent Model, learning longer term structure</h1>
+					<img height="300px" style="float:right" src="assets/flow.svg" alt="">
 				
 					<h2>Spectrogram Architectures </h2>
 					<ul>
@@ -319,18 +353,23 @@
 						<li><b>Input (mix):</b> (sample, frames, frequency)</li>
 						<li><b>Output (target):</b> (sample, frames, frequency)</li>
 					</ul>
+					<p></p>
+					<ul>
+						<li><a href="https://www.sisec17.audiolabs-erlangen.de/#/listen/34/UHL2">Demo: https://www.sisec17.audiolabs-erlangen.de/#/listen/34/UHL2</a></li>
+					</ul>
+					
 				</section>
 
 				<section>
-					<h1>A Baseline System</h1>
+					<h1>Open-Unmix Baseline</h1>
 					<img style="margin-top:2%; float:left" width="160%" src="assets/open-unmix-master_branch1.svg" alt="">
 				</section>
 				<section>
-					<h1>A Baseline System</h1>
+					<h1>Open-Unmix Baseline</h1>
 					<img style="margin-top:2%; float:left" width="160%" src="assets/open-unmix-master_branch2.svg" alt="">
 				</section>
 				<section>
-					<h1>A Baseline System</h1>
+					<h1>Open-Unmix Baseline</h1>
 					<img style="margin-top:2%; float:left" width="160%" src="assets/open-unmix-master_branch3.svg" alt="">
 				</section>
 
@@ -352,26 +391,16 @@
 
 				</section>
 
-							
-				<section>
-					<h1>Training Dataset: MUSDB18</h1>
-					<ul>
-						<li>100 train / 50 test full tracks</li>
-						<li>Mastered with pro. digital audio workstations</li>
-						<li>compressed STEMS (<code>MUSDB18</code>) and uncompressed WAV <code>MUSDB18-HQ</code>
-						<li>Parser and Evaluation tools in <i class="fab fa-python"></i></li>
-						<li><a ref=https://sigsep.github.io/datasets/musdb.html>https://sigsep.github.io/datasets/musdb.html </a> </li>
-								</ul> <img width="320px" style="float: right" src="assets/ni_logo.png" alt="">
-								<img width="60%" src="assets/hero.svg" alt="">
-				</section>
 				<section>
 					<h1>Evaluation</h1>
 					
-					<img src="assets/chart.svg" alt="">
+					<img src="https://sigsep.github.io/eusipco2019_tutorial/assets/boxplot_full.svg" alt="">
 				</section>
 
-				<section class="fig-container" data-background-color="#000000" data-file="https://www.youtube.com/embed/IxLnoy-GzqI">
+				<section>
+					<h1>Discussion</h1>
 				</section>
+
 				<section class="fig-container" data-background-color="#000000" data-file="https://www.youtube.com/embed/7ezi7EFtZrU">
 					<!-- demo video 1 -->
 				</section>
@@ -380,125 +409,158 @@
 					<!-- demo video 2 -->
 				</section>
 
-
 				<section>
-					<h1>Discussion</h1>
-				</section>
-				
-
-				<section>
-					<h1>Computer Vision</h1>
+					<h1>Convolutional Encoder/Decoder?</h1>
 				
 					<div align="center">
-						<img width="700px" src="assets/cat_segment.png" alt="">
+						<img src="assets/encoder_decoder.png" alt="">
 					</div>
 				</section>
-				
+
 				<section>
 					<h1>Convolutional Neural Networks</h1>
 				
 					<div align="center">
 						<img width="700px" src="assets/classification.png" alt="">
 					</div>
+					<div class="caption">Image: <i>Deep Learning with PyTorch: Build, Train, and Tune Neural Networks Using Python Tools
+					Book by Eli Stevens and Thomas Viehmann</i></div>
+
+				</section>
+
+
+				<section>
+					<h1>Typical ConvNet for Audio</h1>
+				
+					<ul>
+						<li>Output: softmax or sigmoid layer</li>
+						<li>Loss function is the e.g. cross-entropy between the output and the label vector</li>
+						<li>Appropriate in audio-to-tag or audio-to-score (MIDI, beat, chord) task</li>
+					</ul>
+					<img style="float: right" width="800px" src="https://raw.githubusercontent.com/gojibjib/jibjib-model/master/assets/Typical_cnn_spectrogram.png" alt="">
+					<div style="float: right" class="caption">Image: <i>https://github.com/gojibjib/jibjib-model</i></div>
+
 				</section>
 
 				<section>
-					<h1>Convolutional Auto-Encoder</h1>
+					<h1>Segmentation (=Separation?)</h1>
 				
+					<div align="center">
+						<img width="700px" src="assets/cat_segment.png" alt="">
+					</div>
+										<div class="caption">Image: <i>Deep Learning with PyTorch: Build, Train, and Tune Neural Networks Using Python Tools
+												Book by Eli Stevens and Thomas Viehmann</i></div>
+
+				</section>
+								
+				<section>
+					<h1>ConvNet for Audio-to-audio</h1>
 					<ul>
-						<li>Unpooling</li>
-						<li>Deconvolution/Transposed Convolution</li>
-						<!-- Making the upsampling procedure parameter free, where Unet makes use of transpose convolution (filters) to learn how to -->
-						<!-- upsample. -->
-						<!-- segnet keeps track of the indices -->
-					</ul>
-				</section>
-				
-				<section>
-					<h1>Encoder/Decoder architectures</h1>
-				
-					<ul>
-						<li>For audio classification, output is softmax or sigmoid layer</li>
-						<li>The loss function is the e.g. cross-entropy between the output and the label vector</li>
-						<li>Appropriate in audio-to-tag (or semantic labels) or audio-to-score (MIDI, beat, chord) task</li>
-					</ul>
-				</section>
-				
-				<section>
-					<h1>Encoder/Decoder for audio-to-audio</h1>
-					<ul>
-						<li>source separation, style transfer, denoising, enhancement</li>
-						<li>Inverse architecture (decoder) converts the feature space back to the audio representation through
-							<b>upsampling</b></li>
-					</ul>
-					<img style="float: right" width="200px" src="assets/encoder-decoder.png" alt="">
-				</section>
-				
-				<section>
-					<h1>Denoising Auto-Encoder (AE)</h1>
-					<!-- lots of parameters, not deep -->
-				</section>
-				
-				<section>
-				
-					<!-- One simple model to use for segmentation would have repeated convolutional layers without any downsampling. 
-										Given appropriate padding, that would result in output the same size as the input (good), but a very limited receptive field -->
-					<h1>How to design the decoder for an convolutional network</h1>
-				
-					<h3>The classification model uses each downsampling layer to double the effective reach of the following
-						convolutions; and without that increase in effective field size, each segmented pixel will only be able to consider a very local
-						neighborhood.</h3>
+						<li>Source separation, style transfer, denoising, enhancement</li>
+						<li>Inverse architecture converts the feature space back to the audio representation
+						</ul>
+						<p></p>
+						<h3>How to design upsampling network</h3>
 						
-						How can we improve the receptive field of an output pixel while maintaining a 1:1 ratio of
-						input pixels to output pixels?
-						<h3>why don't we just use padding?</h3>
-							<!-- because we need to keep the receptive field from the input -->
+						<img style="float: right" width="120px" src="assets/encoder-decoder.png" alt="">
+						<ul>
+							<li>Padding + Convolution (simple, limited receptive field)</li>
+							<li>How can we improve the receptive field and get 1:1 ratio of
+								input/output?</li>
+							</ul>
+							
+					</section>
+
+				<section>
+					<h1>Upsampling</h1>
 				
+					<ul>
+						<li>Unpooling (parameter free)</li>
+						<img src="assets/unpooling.png" alt="">
+				
+					</ul>
+				
+					<ul>
+						<li>Deconvolution (=upsampled convolution)</li>
+						<img src="assets/deconvolution.png" alt="">
+					</ul>
+					<div class="caption">Image: Learning deconvolution network for semantic segmentation, H. Noh, S. Hong, B. Han,</div>
+
 				</section>
-				
+
+				<section>
+					<h1>upsampled convolutions?</h1>
+					<h1>✍️</h1>
+				</section>
+
+				<section>
+					<h1>Fully convolutional network (FCN)</h1>
+					<p></p>
+					<p></p>
+					<p></p>
+					<img src="https://miro.medium.com/max/3486/0*jIBAjzSynvcV-lvO.png" width="900em" alt="">
+					<ul>
+						<li>Misses fine structure needed for separation</li>
+					</ul>
+					<div class="caption">Image: Learning Deconvolution Network for Semantic Segmentation
+					Hyeonwoo Noh, Seunghoon Hong, Bohyung Han</div>
+
+				</section>
+
+
 				<section>
 					<h1>U-net</h1>
 					<ul>
 						<li>First introduced for medical image segmentation</li>
-						<li>Main contribution: The direct feature maps from the corresponding encoder layer ensure high precision of localization</li>
 					</ul>
 					<img src="assets/u-net-image.png" width="700em" alt="">
+					<div class="caption">Image: U-Net: Convolutional Networks for Biomedical Image Segmentation
+						Olaf Ronneberger, Philipp Fischer, Thomas Brox</div>
+
 				</section>
 
 				<section>
-					<h1>Skip connection</h1>
-					We first touched on skip connections in chapter 8, although they are employed differently here than in the ResNet
-					architecture. In U-Net, skip connections short-circuit inputs along the downsampling path into the corresponding
-					layers
-					in the upsampling path. These layers receive as input both the upsampled results of the wide receptive field layers
-					from
-					lower in the U as well as the output of the earlier fine detail layers via the “copy and crop” bridge connections.
-					This
-					is the key innovation behind U-Net (which, interestingly, predated ResNet).
+					<h1>Main contribution: Skip connection</h1>
+					
+					<ul>
+						<li>known from ResNet? Here applied differently</li>	
+						<li>Here: skip connections short-circuit inputs along the downsampling path</li>
+						<li>Layers concatenate (or sum):
+							<ul>
+								<li>1. input from upsampled results (large receptive field)</li>
+								<li>2. output of the earlier fine detail</li>
+							</ul>
+						</li>
+					</ul>
+					<img style="float: right" width="400px" src="https://miro.medium.com/max/960/1*dJRA7-IjccrkCWw86V-oUg.gif" alt="">
+
 				</section>
 			
 				<section>
 					<h1>Spectrogram U-net</h1>
+					<div align="center"><img src="assets/u-net-block.png" width="600em" alt=""></div>
+					
+				<div class="caption">Image: Singing Voice Separation with Deep U-Net Convolutional Networks, Jansson et. al.</div>
 
-					<img src="assets/u-net-block.png" width="700em" alt="">
 				</section>
 
 				<section>
 					<h1>Details</h1>
 
 					<ul>
-						<li>The waveform input is resampled to 8kHz and the spectrogram is normalized to the range [0,1]</li>
-						<li>5x5 Filter size of stride 2 in both conv and transposed conv layers</li>
+						<li>Waveform input resampled to 8kHz, spectrogram is normalized to the range [0,1]</li>
 						<li>No pooling</li>
-						<li>Use L1 norm as a loss function</li>
+						<li>L1 norm as loss function</li>
+						<li>5x5 Filter size of stride 2 in both conv and upsampled conv layers</li>
 					</ul>
 				</section>	
+				
 				<section>
-					<h1>Demo</h1>
+					<h1>Open-Unmix vs. Spleeter vs. ConvtasNet vs. Demucs. </h1>
 
 									<div style="margin-left: 8em">
 					<ul>
-						<li>Spleeter</li>
+						<li></li>
 					</ul>
 					<iframe scrolling="no" allow="autoplay"
 						src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/934126789&amp;color=%23ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;show_teaser=true"
@@ -508,12 +570,12 @@
 				</section>
 
 				<section>
-					<h1>Are transposed convolutions safe?</h1>
-					<h3>Demo</h3>
+					<h1>Are upsampled convolution safe for audio?</h1>
+					<h1>✍️</h1>
 				</section>
 
 				<section>
-					<h1>Transposed Convolution</h1>
+					<h1>Upsampled Convolution</h1>
 					<div style="margin-left: 6em; margin-top: 6em;">
 						<iframe width="690px" height="300px" data-src="assets/transposedconv/deconv1d.html" data-preload></iframe>
 					</div>
@@ -521,7 +583,7 @@
 				</section>
 
 				<section>
-					<h1>2D transposed Convolution</h1>
+					<h1>2D upsampled Convolution</h1>
 
 				<div style="margin-left: 6em; margin-top: 6em;">
 					<iframe width="690px" height="400px" data-src="assets/transposedconv/deconv2d.html" data-preload></iframe>
@@ -532,13 +594,18 @@
 				</section>
 
 				<section>
-					<h1>Artifacts due to Convolution</h1>
+					<h1>Issues with audio upsampling</h1>
 
+					<img style="float: right" width="320px" src="assets/upsampling_jordi.png" alt="">
 					<ul>
-						<li>Transposed convolution (except stride == kernel size)</li>
 						<li>Weight initialization</li>
+						<li>Upsampled convolution (except stride == kernel size)</li>
 						<li>Training</li>
 					</ul>
+					<p></p>
+					<div class="caption">Upsampling artifacts in neural audio synthesis
+					Jordi Pons, Santiago Pascual, Giulio Cengarle, Joan Serrà</div>
+
 				</section>
 
 				
@@ -596,31 +663,39 @@
 				</section>
 	
 				<section>
+					<h1>Issues with magnitude spectrograms</h1>
+					<ul>
+						<li>STFT depends on many parameters: window size, hop size, window type</li>
+						<li>Phase information is not used</li>
+						<li>Using the mixture phase for reconstruction may cause artifacts</li>
+					</ul>
+					<p></p>
+					<h5 class="fragment" >Solution 1: complex spectrograms</h5>
+					<img class="fragment" style="float: right" width="350px" src="assets/convtasnet-kernels.png" alt="">
+					<h5 class="fragment" >Solution 2: learnable transform - Conv-Tasnet (SOTA for speech separation)</h5>
+					
+				</section>
+
+				<section>
 				
-					<h1>Spectrogram vs time domain</h1>
+					<h1>Demo: Spectrogram vs time domain</h1>
+					<ul>
+						<li>Both methods have almost the same SDR</li>
+					</ul>
 					<iframe src="https://share.unmix.app/KoyqGF6lrcqBYkYZBYze" width="900px" height="500px" frameborder="0"></iframe>
 				
-				</section>
-			
-				<section>
-					<h1>Conv U-net vs Recurrent</h1>
-
-					<ul>
-						<li>👎 U-net cannot be made low delay</li>
-						<li>U-net cannot be made low delay</li>
-					</ul>
 				</section>
 
 				<section>
 					<h1>Trends</h1>
 
 					<ul>
-						<li>From “Supervised” to “Universal” Separation</li>
-						<li>Dealing with “Imperfect” Training Data</li>
-						<li>“Imperfect” = unknown mixtures of sources</li>
-						<li>Perceptual Loss Functions</li>
-						<li>Multi-Task Training</li>
-						<li>From Research to Deployment</li>
+						<li class="fragment">From “Supervised” to “Universal” Separation</li>
+						<li class="fragment">Dealing with “Imperfect” Training Data</li>
+						<li class="fragment">“Imperfect” = unknown mixtures of sources</li>
+						<li class="fragment">Perceptual Loss Functions</li>
+						<li class="fragment">Multi-Task Training</li>
+						<li class="fragment">From Research to Deployment</li>
 					</ul>
 				</section>
 
@@ -648,14 +723,13 @@
 					<ul>
 						<li><a href="https://sigsep.github.io">sigsep.github.io</a> Dataset and Baseline implementations</li>
 						<li><a href="https://source-separation.github.io">source-separation.github.io</a> Separation Tutorial:</li>
-						<li><a href=""></a></li>
-						<li><a href=""></a></li>
 					</ul>
+					<img src="https://sigsep.github.io/hero.png" alt="">
 				</section>
 
 			</div>
 			<div class='footer'>
-				<div id="middlebox">Deep Learning for Music Unmixing</div>
+				<div style="color:black; font-size: 20px;" id="middlebox">DLA: Music Source Separation</div>
 			</div>
 		</div>
 
